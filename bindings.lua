@@ -318,9 +318,9 @@ M.init = function()
 			{ description = "Emoji", group = "7 - dmenu/rofi" }),
 
 		-- 8 - script keys
-		awful.key({}, "XF86BrightnessDown", function() awful.spawn(home .. "/.scripts/change-brightness down") end,
+		awful.key({}, "XF86MonBrightnessDown", function() awful.spawn(home .. "/.scripts/change-brightness down") end,
 			{ description = "Decrease brightness", group = "8 - scripts" }),
-		awful.key({}, "XF86BrightnessUp", function() awful.spawn(home .. "/.scripts/change-brightness up") end,
+		awful.key({}, "XF86MonBrightnessUp", function() awful.spawn(home .. "/.scripts/change-brightness up") end,
 			{ description = "Increase brightness", group = "8 - scripts" }),
 		awful.key({}, "XF86Display", function() awful.spawn(home .. "/.scripts/rotate-screen") end,
 			{ description = "Rotate screen", group = "8 - scripts" }),

@@ -1,8 +1,10 @@
+local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
 
 local M = {}
 
+-- Helper functions {{{
 local function is_terminal(c)
 	return (c.class and c.class:match("Alacritty")) and true or false
 end
@@ -45,12 +47,33 @@ local function minimize_terminal(c)
 	end)
 end
 
+local function move_mouse_onto_focused_client()
+	local c = client.focus
+
+	gears.timer({
+		timeout = 0.1,
+		autostart = true,
+		single_shot = true,
+		callback = function()
+			if mouse.object_under_pointer() ~= c then
+				local geometry = c:geometry()
+				local x = geometry.x + geometry.width / 2
+				local y = geometry.y + geometry.height / 2
+				mouse.coords({ x = x, y = y }, true)
+			end
+		end
+	})
+end
+-- }}}
+
 M.init = function()
-	-- signal function to execute when a new client appears.
+	-- when a new client appears
 	client.connect_signal("manage", function(c)
+		local t = c.first_tag
+
 		-- set master factor to 0.55 (only if there are 2 clients)
 		if #c.screen.tiled_clients == 2 then
-			awful.tag.setmwfact(0.55)
+			t.master_width_factor = 0.55
 		end
 
 		-- set new windows as slave
@@ -60,8 +83,7 @@ M.init = function()
 		minimize_terminal(c)
 
 		-- focus tag of new clients
-		local t = c.first_tag
-		awful.tag.viewonly(t)
+		t:view_only(t)
 		c:emit_signal("request::activate", "manage", { raise = true })
 
 		-- if client is floating, center it
@@ -75,12 +97,36 @@ M.init = function()
 		c:emit_signal("request::activate", "mouse_enter", { raise = false })
 	end)
 
-	-- no border for maximized clients
-	client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-	client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+	-- when a client is focused
+	client.connect_signal("focus", function(c)
+		-- no border for maximized clients
+		c.border_color = beautiful.border_focus
 
-	-- No borders when rearranging only 1 non-floating or maximized client
+		-- move mouse onto focused client
+		move_mouse_onto_focused_client()
+	end)
+
+	-- when a client is unfocused
+	client.connect_signal("unfocus", function(c)
+		-- no border for maximized clients
+		c.border_color = beautiful.border_normal
+	end)
+
+	-- when a client is swapped
+	client.connect_signal("swapped", function()
+		-- move mouse onto focused client
+		move_mouse_onto_focused_client()
+	end)
+
+	-- when a client is closed
+	client.connect_signal("unmanage", function()
+		-- move mouse onto focused client
+		move_mouse_onto_focused_client()
+	end)
+
+	-- when arranging the screen
 	screen.connect_signal("arrange", function(s)
+		-- No borders when rearranging only 1 non-floating client
 		local only_one = #s.tiled_clients == 1
 		local is_layout_max = awful.layout.getname(awful.layout.get(s)) == " [M] "
 		for _, c in pairs(s.clients) do

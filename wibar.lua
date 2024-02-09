@@ -10,7 +10,7 @@ local cmus_widget = require("widgets.cmus")
 local M = {}
 
 M.init = function()
-	mytextclock = wibox.layout.margin(
+	mytextclock = wibox.container.margin(
 		wibox.widget.textclock('%y-%m-%d %H:%M '),
 		5, 0, 0, 0)
 
@@ -31,18 +31,18 @@ M.init = function()
 		widget_font = beautiful.font,
 	}
 
-	myVolume = wibox.layout.margin(
+	myVolume = wibox.container.margin(
 		volume_widget {
 			card = 0,
 			widget_type = "icon",
 		},
 		0, 5, 0, 0)
 
-	mysystray = wibox.layout.margin(
+	mysystray = wibox.container.margin(
 		wibox.widget.systray(true),
 		0, 5, 0, 0)
 
-	myCmus = wibox.layout.margin(
+	myCmus = wibox.container.margin(
 		cmus_widget(),
 		10, 0, 0, 0)
 
