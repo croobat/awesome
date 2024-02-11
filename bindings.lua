@@ -135,17 +135,7 @@ M.init = function()
 		awful.key({ modkey, }, "space", function() awful.layout.inc(1) end,
 			{ description = "Next layout", group = "2 - layout" }),
 		awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end,
-			{ description = "Previous layout", group = "2 - layout" }),
-		awful.key({ modkey }, "t",
-			function()
-				local current_layout = awful.layout.getname(awful.layout.get(awful.screen.focused()))
-				if current_layout == " [M] " then
-					awful.layout.set(awful.layout.suit.tile)
-				else
-					awful.layout.set(awful.layout.suit.max)
-				end
-			end,
-			{ description = "Toggle max layout", group = "2 - layout" })
+			{ description = "Previous layout", group = "2 - layout" })
 	)
 
 	-- client bindings
@@ -158,6 +148,20 @@ M.init = function()
 			c.fullscreen = not c.fullscreen
 			c:raise()
 		end, { description = "Toggle fullscreen", group = "3 - client" }),
+		awful.key({ modkey }, "t", function(c)
+				local current_layout = awful.layout.getname(awful.layout.get(awful.screen.focused()))
+
+				if current_layout == " [M] " then
+					awful.layout.set(awful.layout.suit.tile)
+				else
+					awful.layout.set(awful.layout.suit.max)
+				end
+
+				if c.fullscreen then
+					c.fullscreen = false
+				end
+			end,
+			{ description = "Toggle max layout", group = "3 - client" }),
 		awful.key({ modkey }, "z",
 			function(c)
 				if c == awful.client.getmaster() then
