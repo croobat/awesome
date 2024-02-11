@@ -56,7 +56,7 @@ local function move_mouse_onto_focused_client()
 
 	if c then
 		gears.timer({
-			timeout = 0.05,
+			timeout = 0.01,
 			autostart = true,
 			single_shot = true,
 			callback = function()

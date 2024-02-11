@@ -1,5 +1,9 @@
+local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
+
+screen_width = awful.screen.focused().geometry.width
+screen_height = awful.screen.focused().geometry.height
 
 local M = {}
 
@@ -35,14 +39,37 @@ M.init = function()
 			}
 		},
 
+		-- Scratchpad rules
+		{
+			rule_any = {
+				name = { "__scratchpad__" }
+			},
+			properties = {
+				skip_taskbar = false,
+				floating = true,
+				ontop = false,
+				minimized = true,
+				sticky = false,
+				width = screen_width * 0.8,
+				height = screen_height * 0.8,
+			},
+			callback = function(c)
+				awful.placement.centered(c, { honor_padding = true, honor_workarea = true })
+				gears.timer.delayed_call(function()
+					c.urgent = false
+				end)
+			end
+		},
+
+
 		-- Floating clients.
 		{
 			rule_any = {
 				instance = {
-					"DTA", -- Firefox addon DownThemAll
+					"DTA",   -- Firefox addon DownThemAll
 					"copyq", -- Includes session name in class
 					"pinentry", -- GPG key password entry
-					"peek", -- Peek Gif Recorder
+					"peek",  -- Peek Gif Recorder
 					"gcolor3", -- GTK color picker
 					"kdeconnect-app", -- KDE Connect
 					"pavucontrol", -- Pulseaudio volume control

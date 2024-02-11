@@ -1,6 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local scratch = require("widgets.scratchpad")
 
 local volume_widget = require("widgets.volume-widget.volume")
 
@@ -82,6 +83,9 @@ M.init = function()
 			{ description = "Lua prompt", group = "4 - awesome" }),
 		awful.key({ modkey, "Shift" }, "r", function() awful.screen.focused().mypromptbox:run() end,
 			{ description = "Prompt", group = "4 - awesome" }),
+		-- open scratchpad
+		awful.key({ modkey }, "`", function() scratch.toggle("alacritty --title '__scratchpad__'") end,
+			{ description = "Open scratchpad terminal", group = "4 - awesome" }),
 
 		-- tag group
 		awful.key({ modkey, }, "Left", awful.tag.viewprev,
@@ -159,6 +163,7 @@ M.init = function()
 
 				if c.fullscreen then
 					c.fullscreen = false
+					awful.layout.set(awful.layout.suit.tile)
 				end
 			end,
 			{ description = "Toggle max layout", group = "3 - client" }),
