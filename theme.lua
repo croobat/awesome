@@ -1,7 +1,3 @@
----------------------------
--- Default awesome theme --
----------------------------
-
 local gears = require("gears")
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")

@@ -1,7 +1,6 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 
 local scratch = require("widgets.scratchpad")
 
@@ -27,14 +26,11 @@ end
 
 local function minimize_terminal(c)
 	if awesome.startup then return end
-
-	if is_terminal(c) then
-		return
-	end
-	local parent_client = awful.client.focus.history.get(c.screen, 1)
+	if is_terminal(c) then return end
 
 	local awesome_config_folder = os.getenv("HOME") .. "/.config/awesome/"
 
+	local parent_client = awful.client.focus.history.get(c.screen, 1)
 	local pid = c.pid or ""
 
 	awful.spawn.easy_async('bash ' .. awesome_config_folder .. 'utils/check_parent.sh gppid ' .. pid, function(gppid)
