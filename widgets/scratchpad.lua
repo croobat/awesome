@@ -1,16 +1,17 @@
 local client = client
 local awful = require("awful")
 local util = require("awful.util")
+local naughty = require("naughty")
 
 local scratch = {}
-local defaultRule = {name = "__scratchpad__"}
+local defaultRule = { name = "__scratchpad__" }
 
 -- Turn on this scratch window client (add current tag to window's tags,
 -- then set focus to the window)
 local function turn_on(c)
 	local current_tag = awful.tag.selected(c.screen)
-	ctags = {current_tag}
-	for _,tag in pairs(c:tags()) do
+	ctags = { current_tag }
+	for _, tag in pairs(c:tags()) do
 		if tag ~= current_tag then table.insert(ctags, tag) end
 	end
 	c:tags(ctags)
@@ -22,7 +23,7 @@ end
 local function turn_off(c)
 	local current_tag = awful.tag.selected(c.screen)
 	local ctags = {}
-	for _,tag in pairs(c:tags()) do
+	for _, tag in pairs(c:tags()) do
 		if tag ~= current_tag then table.insert(ctags, tag) end
 	end
 	c:tags(ctags)
@@ -47,19 +48,6 @@ function scratch.raise(cmd, rule)
 	util.spawn(cmd)
 end
 
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
 function scratch.toggle(cmd, rule, _)
 	rule = rule or defaultRule
 
@@ -67,6 +55,16 @@ function scratch.toggle(cmd, rule, _)
 		turn_off(client.focus)
 	else
 		scratch.raise(cmd, rule)
+	end
+end
+
+function scratch.turn_off_all()
+	local function matcher(c)
+		return awful.rules.match(c, defaultRule)
+	end
+
+	for c in awful.client.iterate(matcher) do
+		turn_off(c)
 	end
 end
 

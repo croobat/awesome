@@ -1,6 +1,9 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
+
+local scratch = require("widgets.scratchpad")
 
 local M = {}
 
@@ -128,6 +131,10 @@ M.init = function()
 	client.connect_signal("unmanage", function()
 		-- move mouse onto focused client
 		move_mouse_onto_focused_client()
+	end)
+
+	tag.connect_signal("property::selected", function()
+		scratch.turn_off_all()
 	end)
 
 	-- when arranging the screen
