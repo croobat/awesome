@@ -17,13 +17,24 @@ local my_hotkeys_popup = hotkeys_popup.widget.new({
 		Mod4 = "(M)",
 		Control = "(C)",
 		Shift = "(S)",
-		XF86AudioRaiseVolume = "🔈+",
-		XF86AudioLowerVolume = "🔉-",
-		XF86AudioMute = "🔇",
+		XF86AudioMute = "F01 󰖁",
+		XF86AudioLowerVolume = "F02 󰝝",
+		XF86AudioRaiseVolume = "F03 󰝞",
+		XF86AudioMicMute = "F04 🎤",
+		XF86MonBrightnessDown = "F05 󰽥",
+		XF86MonBrightnessUp = "F06 󰖨",
+		XF86Display = "F07 󰌢",
+		XF86LAN = "F08 󰖪",
+		XF86Tools = "F09 󰒓",
+		XF86Bluetooth = "F10 ",
+		XF86WakeUp = "F11 󰌌",
+		XF86Favorites = "F12 󰓎",
 	}
 })
 
 local home = os.getenv("HOME")
+
+local scripts = home .. "/.scripts"
 
 local M = {}
 
@@ -56,7 +67,7 @@ M.init = function()
 			{ description = "Show help", group = "4 - awesome" }),
 		awful.key({ modkey, "Control" }, "r", awesome.restart,
 			{ description = "Reload awesome", group = "4 - awesome" }),
-		awful.key({ modkey, "Shift", "Control" }, "r", awesome.quit,
+		awful.key({ modkey, altkey, "Shift", "Control" }, "r", awesome.quit,
 			{ description = "Quit awesome", group = "4 - awesome" }),
 		awful.key({ modkey, "Control", "Shift" }, "x",
 			function()
@@ -261,23 +272,44 @@ M.init = function()
 	-- program keys --
 	globalkeys = gears.table.join(globalkeys,
 
-		-- 5 -media keys
-		awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(10) end,
-			{ description = "Increase volume", group = "5 - media" }),
-		awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(10) end,
-			{ description = "Decrease volume", group = "5 - media" }),
+		-- 5 -media and scripts keys
 		awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
-			{ description = "Toggle mute", group = "5 - media" }),
-		awful.key({ modkey }, "]", function() volume_widget:inc(10) end,
-			{ description = "Increase volume", group = "5 - media" }),
-		awful.key({ modkey }, "[", function() volume_widget:dec(10) end,
-			{ description = "Decrease volume", group = "5 - media" }),
-		awful.key({ modkey }, "\\", function() volume_widget:toggle() end,
-			{ description = "Toggle mute", group = "5 - media" }),
+			{ description = "Toggle mute", group = "5 - media/scripts" }),
+		awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(10) end,
+			{ description = "Decrease volume", group = "5 - media/scripts" }),
+		awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(10) end,
+			{ description = "Increase volume", group = "5 - media/scripts" }),
+		-- XF86AudioMicMute
+		awful.key({}, "XF86MonBrightnessDown", function() awful.spawn(scripts .. "/change-brightness down") end,
+			{ description = "Decrease brightness", group = "5 - media/scripts" }),
+		awful.key({}, "XF86MonBrightnessUp", function() awful.spawn(scripts .. "/change-brightness up") end,
+			{ description = "Increase brightness", group = "5 - media/scripts" }),
+		awful.key({}, "XF86Display", function() awful.spawn(scripts .. "/rotate-screen") end,
+			{ description = "Rotate screen", group = "5 - media/scripts" }),
+		-- XF86LAN
 		awful.key({}, "XF86Tools", function() awful.spawn("thunderbird") end,
-			{ description = "Mail", group = "5 - media" }),
+			{ description = "Mail", group = "5 - media/scripts" }),
 		awful.key({}, "XF86Bluetooth", function() awful.spawn("blueberry") end,
-			{ description = "Bluetooth", group = "5 - media" }),
+			{ description = "Bluetooth", group = "5 - media/scripts" }),
+		-- XF86WakeUp
+		awful.key({}, "XF86Favorites",
+			function() awful.spawn("alacritty --title rofi-beats -e " .. scripts .. "/rofi-beats") end,
+			{ description = "Rofi beats", group = "5 - media/scripts" }),
+
+		-- scripts
+		awful.key({ modkey }, "]", function() volume_widget:inc(10) end,
+			{ description = "Increase volume", group = "5 - media/scripts" }),
+		awful.key({ modkey }, "[", function() volume_widget:dec(10) end,
+			{ description = "Decrease volume", group = "5 - media/scripts" }),
+		awful.key({ modkey }, "\\", function() volume_widget:toggle() end,
+			{ description = "Toggle mute", group = "5 - media/scripts" }),
+		awful.key({ modkey }, "b", function() awful.spawn(scripts .. "/bmks") end,
+			{ description = "Bookmarks", group = "5 - media/scripts" }),
+		awful.key({ modkey, "Shift" }, "b", function() awful.spawn(scripts .. "/bmks gh-repos") end,
+			{ description = "Repos bookmarks", group = "5 - media/scripts" }),
+		awful.key({ modkey, "Shift" }, "s", function() awful.spawn(scripts .. "/rotate-screen") end,
+			{ description = "Rotate screen", group = "5 - media/scripts" }),
+
 
 		-- 6 - special keys
 		awful.key({ modkey, "Shift" }, "Return", function() awful.spawn(file_manager) end,
@@ -317,56 +349,39 @@ M.init = function()
 			end,
 			{ description = "Emoji", group = "7 - dmenu/rofi" }),
 
-		-- 8 - script keys
-		awful.key({}, "XF86MonBrightnessDown", function() awful.spawn(home .. "/.scripts/change-brightness down") end,
-			{ description = "Decrease brightness", group = "8 - scripts" }),
-		awful.key({}, "XF86MonBrightnessUp", function() awful.spawn(home .. "/.scripts/change-brightness up") end,
-			{ description = "Increase brightness", group = "8 - scripts" }),
-		awful.key({}, "XF86Display", function() awful.spawn(home .. "/.scripts/rotate-screen") end,
-			{ description = "Rotate screen", group = "8 - scripts" }),
-		awful.key({}, "XF86Favorites",
-			function() awful.spawn("alacritty --title rofi-beats -e " .. home .. "/.scripts/rofi-beats") end,
-			{ description = "Rofi beats", group = "8 - scripts" }),
-		awful.key({ modkey }, "b", function() awful.spawn(home .. "/.scripts/bmks") end,
-			{ description = "Bookmarks", group = "8 - scripts" }),
-		awful.key({ modkey, "Shift" }, "b", function() awful.spawn(home .. "/.scripts/bmks gh-repos") end,
-			{ description = "Repos bookmarks", group = "8 - scripts" }),
-		awful.key({ modkey, "Shift" }, "s", function() awful.spawn(home .. "/.scripts/rotate-screen") end,
-			{ description = "Rotate screen", group = "8 - scripts" }),
-
-		-- 9 - apps keys
+		-- 8 - apps keys
 		awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
-			{ description = "Terminal", group = "9 - apps" }),
+			{ description = "Terminal", group = "8 - apps" }),
 		awful.key({ modkey }, "f", function() awful.spawn("firefox") end,
-			{ description = "Firefox", group = "9 - apps" }),
+			{ description = "Firefox", group = "8 - apps" }),
 		awful.key({ modkey, "Shift" }, "f", function() awful.spawn("firefox-developer-edition") end,
-			{ description = "Firefox developer edition", group = "9 - apps" }),
+			{ description = "Firefox developer edition", group = "8 - apps" }),
 		awful.key({ modkey }, "g", function() awful.spawn("google-chrome-stable") end,
-			{ description = "Google chrome", group = "9 - apps" }),
+			{ description = "Google chrome", group = "8 - apps" }),
 		awful.key({ modkey, "Shift" }, "g", function() awful.spawn("google-chrome-unstable") end,
-			{ description = "Google chrome unstable", group = "9 - apps" }),
+			{ description = "Google chrome unstable", group = "8 - apps" }),
 		awful.key({ modkey }, "w", function() awful.spawn("qutebrowser") end,
-			{ description = "Qutebrowser", group = "9 - apps" }),
+			{ description = "Qutebrowser", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "c", function() awful.spawn("alacritty --title cmus -e cmus") end,
-			{ description = "Cmus", group = "9 - apps" }),
+			{ description = "Cmus", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "d", function() awful.spawn("discord") end,
-			{ description = "Discord", group = "9 - apps" }),
+			{ description = "Discord", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "e", function() awful.spawn("alacritty") end,
-			{ description = "Terminal", group = "9 - apps" }),
+			{ description = "Terminal", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "f", function() awful.spawn("freecad") end,
-			{ description = "Freecad", group = "9 - apps" }),
+			{ description = "Freecad", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "g", function() awful.spawn("/opt/google-chat-linux/google-chat-linux %U") end,
-			{ description = "Google chat", group = "9 - apps" }),
+			{ description = "Google chat", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "l", function() awful.spawn("libreoffice") end,
-			{ description = "Libreoffice", group = "9 - apps" }),
+			{ description = "Libreoffice", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "s", function() awful.spawn("steam") end,
-			{ description = "Steam", group = "9 - apps" }),
+			{ description = "Steam", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "v", function() awful.spawn("vlc") end,
-			{ description = "VLC", group = "9 - apps" }),
+			{ description = "VLC", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "y", function() awful.spawn("alacritty --title ncspot -e ncspot") end,
-			{ description = "Spotify", group = "9 - apps" }),
+			{ description = "Spotify", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "z", function() awful.spawn("whatsapp-nativefier") end,
-			{ description = "Whatsapp", group = "9 - apps" })
+			{ description = "Whatsapp", group = "8 - apps" })
 	)
 
 	-- Set keys
