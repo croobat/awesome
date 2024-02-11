@@ -23,6 +23,8 @@ local function copy_size(c, parent_client)
 end
 
 local function minimize_terminal(c)
+	if awesome.startup then return end
+
 	if is_terminal(c) then
 		return
 	end
@@ -48,11 +50,13 @@ local function minimize_terminal(c)
 end
 
 local function move_mouse_onto_focused_client()
+	if awesome.startup then return end
+
 	local c = client.focus
 
 	if c then
 		gears.timer({
-			timeout = 0.1,
+			timeout = 0.05,
 			autostart = true,
 			single_shot = true,
 			callback = function()
