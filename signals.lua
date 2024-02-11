@@ -117,6 +117,10 @@ M.init = function()
 
 	-- when a client is unfocused
 	client.connect_signal("unfocus", function(c)
+		if c.name == "__scratchpad__" then
+			scratch.turn_off_all()
+		end
+
 		-- no border for maximized clients
 		c.border_color = beautiful.border_normal
 	end)
