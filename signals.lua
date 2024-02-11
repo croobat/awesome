@@ -50,19 +50,21 @@ end
 local function move_mouse_onto_focused_client()
 	local c = client.focus
 
-	gears.timer({
-		timeout = 0.1,
-		autostart = true,
-		single_shot = true,
-		callback = function()
-			if mouse.object_under_pointer() ~= c then
-				local geometry = c:geometry()
-				local x = geometry.x + geometry.width / 2
-				local y = geometry.y + geometry.height / 2
-				mouse.coords({ x = x, y = y }, true)
+	if c then
+		gears.timer({
+			timeout = 0.1,
+			autostart = true,
+			single_shot = true,
+			callback = function()
+				if mouse.object_under_pointer() ~= c then
+					local geometry = c:geometry()
+					local x = geometry.x + geometry.width / 2
+					local y = geometry.y + geometry.height / 2
+					mouse.coords({ x = x, y = y }, true)
+				end
 			end
-		end
-	})
+		})
+	end
 end
 -- }}}
 
