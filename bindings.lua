@@ -62,6 +62,7 @@ M.init = function()
 
 	-- global bindings
 	globalkeys = gears.table.join(
+
 	-- awesome group
 		awful.key({ modkey, "Shift" }, "/", function() my_hotkeys_popup:show_help() end,
 			{ description = "Show help", group = "4 - awesome" }),

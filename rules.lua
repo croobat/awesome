@@ -130,7 +130,7 @@ M.init = function()
 		{
 			rule_any = {
 				name = {
-					"cmus v2.10.0",
+					"cmus",
 					"ncspot",
 					"rofi-beats",
 				},
