@@ -1,6 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
 
 local scratch = require("widgets.scratchpad")
 
@@ -65,7 +66,8 @@ local function move_mouse_onto_focused_client()
 			autostart = true,
 			single_shot = true,
 			callback = function()
-				if mouse.object_under_pointer() ~= c then
+				-- avoid if mouse is in top bar
+				if mouse.object_under_pointer() ~= c and mouse.coords().y > 20 then
 					local geometry = c:geometry()
 					local x = geometry.x + geometry.width / 2
 					local y = geometry.y + geometry.height / 2
