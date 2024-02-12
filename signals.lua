@@ -90,6 +90,14 @@ M.init = function()
 		-- set new windows as slave
 		if not awesome.startup then awful.client.setslave(c) end
 
+		-- if client is not floating, put it into tiled mode
+		if not awesome.startup and not c.floating and awful.client.idx(c) then
+			local client_info = awful.client.idx(c)
+			if client_info.col > 0 and client_info.idx > 1 then
+				awful.client.swap.byidx(1 - client_info.idx, c)
+			end
+		end
+
 		-- minimize terminal clients (swallow-like behavior)
 		minimize_terminal(c)
 
@@ -119,6 +127,7 @@ M.init = function()
 
 	-- when a client is unfocused
 	client.connect_signal("unfocus", function(c)
+		-- hide all scratchpads
 		if c.name == "__scratchpad__" then
 			scratch.turn_off_all()
 		end

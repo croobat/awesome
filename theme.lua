@@ -65,10 +65,8 @@ theme.notification_bg = theme.col_black
 theme.notification_fg = theme.col_purple
 theme.notification_shape = gears.shape.rounded_rect
 theme.notification_margin = dpi(0)
--- theme.notification_max_width = dpi(300)
--- theme.notification_max_height = dpi(80)
-theme.notification_max_width = dpi(800)
-theme.notification_max_height = dpi(300)
+theme.notification_max_width = dpi(300)
+theme.notification_max_height = dpi(100)
 
 -- wallpaper
 theme.wallpaper = "/home/tony/Pictures/wallpapers/one-piece/gear5-dim-2.png"
