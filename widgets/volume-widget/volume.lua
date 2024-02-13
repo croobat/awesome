@@ -248,14 +248,14 @@ local function worker(user_args)
 	function volume:inc(s)
 		spawn.easy_async(INC_VOLUME_CMD(card, device, mixctrl, value_type, s or step), function(stdout)
 			update_graphic(volume.widget, stdout)
-			volume:notify()
+			volume:notify(stdout)
 		end)
 	end
 
 	function volume:dec(s)
 		spawn.easy_async(DEC_VOLUME_CMD(card, device, mixctrl, value_type, s or step), function(stdout)
 			update_graphic(volume.widget, stdout)
-			volume:notify()
+			volume:notify(stdout)
 		end)
 	end
 
@@ -263,13 +263,13 @@ local function worker(user_args)
 		if toggle_cmd == nil then
 			spawn.easy_async(TOG_VOLUME_CMD(card, device, mixctrl), function(stdout)
 				update_graphic(volume.widget, stdout)
-				volume:notify()
+				volume:notify(stdout)
 			end)
 		else
 			spawn.easy_async(toggle_cmd, function(_stdout)
 				spawn.easy_async(GET_VOLUME_CMD(card, device, mixctrl, value_type), function(stdout)
 					update_graphic(volume.widget, stdout)
-					volume:notify()
+					volume:notify(stdout)
 				end)
 			end)
 		end
@@ -281,50 +281,27 @@ local function worker(user_args)
 		end
 	end
 
-	function volume:notify()
-		spawn.easy_async("amixer get Master", function(stdout)
-			local text = stdout
+	function volume:notify(stdout)
+		local volume_str
+		local bar_length
+		local volume_number = string.match(stdout, "(%d?%d?%d)%%")
+		local toggle = string.match(stdout, "%[(o%D%D?)%]")
 
-			-- find line with %
-			for line in stdout:gmatch("[^\r\n]+") do
-				if line:find("%d?%d?%d%%") then
-					text = line
-					break
-				end
-			end
+		if toggle == "off" then
+			volume_str = "Muted"
+			bar_length = 0
+		else
+			volume_str = volume_number .. "%"
+			bar_length = math.floor(volume_number / 5)
+		end
 
-			-- get 6th word (toggle)
-			local toggle = text:match("%[(o%D%D?)%]")
+		local bar = string.rep("#", bar_length) .. string.rep("-", 20 - bar_length)
 
-			if toggle == "off" then
-				naughty.notify({
-					text = "Volume: Muted",
-					timeout = 5,
-				})
-				return
-			end
-
-			-- get 4th word (volume)
-			local volume_str = text:match("%S+%s+%S+%s+%S+%s+(%S+)")
-
-			-- strip square brackets [ and ]
-			volume_str = volume_str:gsub("%[", "")
-			volume_str = volume_str:gsub("%]", "")
-
-			-- strip percent sign
-			volume_value = volume_str:gsub("%%", "")
-			-- Create volume bar
-			local volume_percent = tonumber(volume_value)
-
-			local bar_length = math.floor(volume_percent / 5)
-			local bar = string.rep("#", bar_length) .. string.rep("-", 20 - bar_length)
-
-			naughty.destroy_all_notifications()
-			naughty.notify({
-				text = "Volume\n" .. volume_str .. "%\n" .. bar,
-				timeout = 5,
-			})
-		end)
+		naughty.destroy_all_notifications()
+		naughty.notify({
+			text = "Volume\n" .. volume_str .. "\n" .. bar,
+			timeout = 5,
+		})
 	end
 
 	volume.widget:buttons(awful.util.table.join(
