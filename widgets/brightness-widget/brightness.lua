@@ -43,7 +43,7 @@ local function worker(user_args)
 	local program = args.program or 'light'
 	local step = args.step or 5
 	local base = args.base or 20
-	local current_level = 0 -- current brightness value
+	local current_level = 0.0 -- current brightness value
 	local tooltip = args.tooltip or false
 	local percentage = args.percentage or false
 	local rmb_set_max = args.rmb_set_max or false
@@ -126,25 +126,23 @@ local function worker(user_args)
 	end
 
 	local update_widget = function(widget, stdout, _, _, _)
-		local brightness_level = tonumber(string.format("%.0f", stdout))
+		local brightness_level = tonumber(string.format("%.0f", stdout)) or 0
 		current_level = brightness_level
 
 		widget:set_value(brightness_level)
 	end
 
-	function brightness_widget:notify()
-		spawn.easy_async(get_brightness_cmd, function(out)
-			local out_rounded = string.format("%.0f", out)
+	function brightness_widget:notify( value )
+		local out_rounded = string.format("%.0f", value)
 
-			local bar_length = math.floor(out_rounded / 5)
-			local bar = string.rep("#", bar_length) .. string.rep("-", 20 - bar_length)
+		local bar_length = math.floor(out_rounded / 5)
+		local bar = string.rep("#", bar_length) .. string.rep("-", 20 - bar_length)
 
-			naughty.destroy_all_notifications()
-			naughty.notify({
-				text = "Brightness\n" .. out_rounded .. "%\n" .. bar,
-				timeout = 5,
-			})
-		end)
+		naughty.destroy_all_notifications()
+		naughty.notify({
+			text = "Brightness\n" .. out_rounded .. "%\n" .. bar,
+			timeout = 5,
+		})
 	end
 
 	function brightness_widget:set(value)
@@ -152,7 +150,7 @@ local function worker(user_args)
 		spawn.easy_async(string.format(set_brightness_cmd, value), function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
-				brightness_widget:notify()
+				brightness_widget:notify(out)
 			end)
 		end)
 	end
@@ -182,7 +180,7 @@ local function worker(user_args)
 		spawn.easy_async(inc_brightness_cmd, function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
-				brightness_widget:notify()
+				brightness_widget:notify(out)
 			end)
 		end)
 	end
@@ -191,7 +189,7 @@ local function worker(user_args)
 		spawn.easy_async(dec_brightness_cmd, function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
-				brightness_widget:notify()
+				brightness_widget:notify(out)
 			end)
 		end)
 	end
