@@ -1,7 +1,6 @@
 local client = client
 local awful = require("awful")
 local util = require("awful.util")
-local naughty = require("naughty")
 
 local scratch = {}
 local defaultRule = { name = "__scratchpad__" }
@@ -9,7 +8,8 @@ local defaultRule = { name = "__scratchpad__" }
 -- Turn on this scratch window client (add current tag to window's tags,
 -- then set focus to the window)
 local function turn_on(c)
-	local current_tag = awful.tag.selected(c.screen)
+	local s = c.screen
+	local current_tag = s.selected_tag
 	ctags = { current_tag }
 	for _, tag in pairs(c:tags()) do
 		if tag ~= current_tag then table.insert(ctags, tag) end
@@ -21,7 +21,8 @@ end
 
 -- Turn off this scratch window client (remove current tag from window's tags)
 local function turn_off(c)
-	local current_tag = awful.tag.selected(c.screen)
+	local s = c.screen
+	local current_tag = s.selected_tag
 	local ctags = {}
 	for _, tag in pairs(c:tags()) do
 		if tag ~= current_tag then table.insert(ctags, tag) end

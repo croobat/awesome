@@ -4,7 +4,8 @@ globals = {
     "screen",
     "mouse",
     "root",
-    "client"
+    "client",
+    "timer"
 }
 
 read_globals = {

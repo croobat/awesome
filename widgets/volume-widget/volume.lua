@@ -305,14 +305,14 @@ local function worker(user_args)
 			end
 
 			-- get 4th word (volume)
-			local volume = text:match("%S+%s+%S+%s+%S+%s+(%S+)")
+			local volume_str = text:match("%S+%s+%S+%s+%S+%s+(%S+)")
 
 			-- strip square brackets [ and ]
-			volume = volume:gsub("%[", "")
-			volume = volume:gsub("%]", "")
+			volume_str = volume_str:gsub("%[", "")
+			volume_str = volume_str:gsub("%]", "")
 
 			-- strip percent sign
-			volume_value = volume:gsub("%%", "")
+			volume_value = volume_str:gsub("%%", "")
 			-- Create volume bar
 			local volume_percent = tonumber(volume_value)
 
@@ -321,7 +321,7 @@ local function worker(user_args)
 
 			naughty.destroy_all_notifications()
 			naughty.notify({
-				text = "Volume\n" .. volume .. "%\n" .. bar,
+				text = "Volume\n" .. volume_str .. "%\n" .. bar,
 				timeout = 5,
 			})
 		end)
