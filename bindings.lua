@@ -4,6 +4,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 local scratch = require("widgets.scratchpad")
 
 local volume_widget = require("widgets.volume-widget.volume")
+local brightness_widget = require("widgets.brightness-widget.brightness")
 
 local my_hotkeys_popup = hotkeys_popup.widget.new({
 	width = 1600,
@@ -290,9 +291,9 @@ M.init = function()
 		awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(10) end,
 			{ description = "Increase volume", group = "5 - media/scripts" }),
 		-- XF86AudioMicMute
-		awful.key({}, "XF86MonBrightnessDown", function() awful.spawn(scripts .. "/change-brightness down") end,
+		awful.key({}, "XF86MonBrightnessDown", function() brightness_widget:dec() end,
 			{ description = "Decrease brightness", group = "5 - media/scripts" }),
-		awful.key({}, "XF86MonBrightnessUp", function() awful.spawn(scripts .. "/change-brightness up") end,
+		awful.key({}, "XF86MonBrightnessUp", function() brightness_widget:inc() end,
 			{ description = "Increase brightness", group = "5 - media/scripts" }),
 		awful.key({}, "XF86Display", function() awful.spawn(scripts .. "/rotate-screen") end,
 			{ description = "Rotate screen", group = "5 - media/scripts" }),

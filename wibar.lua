@@ -5,6 +5,7 @@ local beautiful = require("beautiful")
 
 local battery_widget = require("widgets.battery-widget")
 local volume_widget = require("widgets.volume-widget.volume")
+local brightness_widget = require("widgets.brightness-widget.brightness")
 local cmus_widget = require("widgets.cmus")
 
 local M = {}
@@ -31,10 +32,16 @@ M.init = function()
 		widget_font = beautiful.font,
 	}
 
+	myBrightness = brightness_widget {
+		type = "icon_and_text",
+		program = "brillo",
+		step = 10,
+	}
+
 	myVolume = wibox.container.margin(
 		volume_widget {
 			card = 0,
-			widget_type = "icon",
+			widget_type = "icon_and_text",
 		},
 		0, 5, 0, 0)
 
@@ -189,6 +196,7 @@ M.init = function()
 				spacing = 10,
 				myCmus,
 				mysystray,
+				myBrightness,
 				myVolume,
 				myBattery,
 				mytextclock,
