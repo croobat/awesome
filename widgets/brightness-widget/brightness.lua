@@ -129,8 +129,6 @@ local function worker(user_args)
 		local brightness_level = tonumber(string.format("%.0f", stdout))
 		current_level = brightness_level
 
-		brightness_widget:notify()
-
 		widget:set_value(brightness_level)
 	end
 
@@ -154,6 +152,7 @@ local function worker(user_args)
 		spawn.easy_async(string.format(set_brightness_cmd, value), function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
+				brightness_widget:notify()
 			end)
 		end)
 	end
@@ -183,6 +182,7 @@ local function worker(user_args)
 		spawn.easy_async(inc_brightness_cmd, function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
+				brightness_widget:notify()
 			end)
 		end)
 	end
@@ -191,6 +191,7 @@ local function worker(user_args)
 		spawn.easy_async(dec_brightness_cmd, function()
 			spawn.easy_async(get_brightness_cmd, function(out)
 				update_widget(brightness_widget.widget, out)
+				brightness_widget:notify()
 			end)
 		end)
 	end
