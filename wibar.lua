@@ -45,9 +45,7 @@ M.init = function()
 		},
 		0, 5, 0, 0)
 
-	mysystray = wibox.container.margin(
-		wibox.widget.systray(true),
-		0, 5, 0, 0)
+	mysystray = wibox.widget.systray(true)
 
 	myCmus = wibox.container.margin(
 		cmus_widget(),
