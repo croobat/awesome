@@ -314,6 +314,8 @@ M.init = function()
 			{ description = "Decrease volume", group = "5 - media/scripts" }),
 		awful.key({ modkey }, "\\", function() volume_widget:toggle() end,
 			{ description = "Toggle mute", group = "5 - media/scripts" }),
+		awful.key({ modkey, "Shift" }, "\\", function() volume_widget:set(100) end,
+			{ description = "Set volume to 100", group = "5 - media/scripts" }),
 		awful.key({ modkey }, "p", function() awful.spawn("playerctl play-pause") end,
 			{ description = "Play/pause", group = "5 - media/scripts" }),
 		awful.key({ modkey }, ".", function() awful.spawn("playerctl next") end,

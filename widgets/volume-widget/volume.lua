@@ -245,6 +245,13 @@ local function worker(user_args)
 		widget:set_volume_level(volume_level)
 	end
 
+	function volume:set(value)
+		spawn.easy_async("amixer -c " .. card .. " -D " .. device .. " sset " .. mixctrl .. " " .. value_type .. " " .. value .. "%", function(stdout)
+			update_graphic(volume.widget, stdout)
+			volume:notify(stdout)
+		end)
+	end
+
 	function volume:inc(s)
 		spawn.easy_async(INC_VOLUME_CMD(card, device, mixctrl, value_type, s or step), function(stdout)
 			update_graphic(volume.widget, stdout)
