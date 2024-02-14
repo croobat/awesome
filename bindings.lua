@@ -284,26 +284,26 @@ M.init = function()
 	globalkeys = gears.table.join(globalkeys,
 
 		-- 5 -media and scripts keys
-		awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
+		awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end, -- F1 Audio mute
 			{ description = "Toggle mute", group = "5 - media/scripts" }),
-		awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(10) end,
+		awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(10) end, -- F2 Audio lower volume
 			{ description = "Decrease volume", group = "5 - media/scripts" }),
-		awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(10) end,
+		awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(10) end, -- F3 Audio raise volume
 			{ description = "Increase volume", group = "5 - media/scripts" }),
-		-- XF86AudioMicMute
-		awful.key({}, "XF86MonBrightnessDown", function() brightness_widget:dec() end,
+		-- F4 Audio mic mute
+		awful.key({}, "XF86MonBrightnessDown", function() brightness_widget:dec() end,  -- F5 Decrease brightness
 			{ description = "Decrease brightness", group = "5 - media/scripts" }),
-		awful.key({}, "XF86MonBrightnessUp", function() brightness_widget:inc() end,
+		awful.key({}, "XF86MonBrightnessUp", function() brightness_widget:inc() end,    -- F6 Increase brightness
 			{ description = "Increase brightness", group = "5 - media/scripts" }),
-		awful.key({}, "XF86Display", function() awful.spawn(scripts .. "/rotate-screen") end,
+		awful.key({}, "XF86Display", function() awful.spawn(scripts .. "/rotate-screen") end, -- F7 Rotate screen
 			{ description = "Rotate screen", group = "5 - media/scripts" }),
-		-- XF86LAN
-		awful.key({}, "XF86Tools", function() awful.spawn("thunderbird") end,
+		-- F8 LAN
+		awful.key({}, "XF86Tools", function() awful.spawn("thunderbird") end, -- F9 Mail
 			{ description = "Mail", group = "5 - media/scripts" }),
-		awful.key({}, "XF86Bluetooth", function() awful.spawn("blueberry") end,
+		awful.key({}, "XF86Bluetooth", function() awful.spawn("blueberry") end, -- F10 Bluetooth
 			{ description = "Bluetooth", group = "5 - media/scripts" }),
-		-- XF86WakeUp
-		awful.key({}, "XF86Favorites",
+		-- F11 Wake up
+		awful.key({}, "XF86Favorites", -- F12 Favorites
 			function() awful.spawn("alacritty --title rofi-beats -e " .. scripts .. "/rofi-beats") end,
 			{ description = "Rofi beats", group = "5 - media/scripts" }),
 
@@ -314,8 +314,12 @@ M.init = function()
 			{ description = "Decrease volume", group = "5 - media/scripts" }),
 		awful.key({ modkey }, "\\", function() volume_widget:toggle() end,
 			{ description = "Toggle mute", group = "5 - media/scripts" }),
-		awful.key({ modkey }, "b", function() awful.spawn(scripts .. "/bmks") end,
-			{ description = "Bookmarks", group = "5 - media/scripts" }),
+		awful.key({ modkey }, "p", function() awful.spawn("playerctl play-pause") end,
+			{ description = "Play/pause", group = "5 - media/scripts" }),
+		awful.key({ modkey }, ".", function() awful.spawn("playerctl next") end,
+			{ description = "Next", group = "5 - media/scripts" }),
+		awful.key({ modkey }, ",", function() awful.spawn("playerctl previous") end,
+			{ description = "Previous", group = "5 - media/scripts" }),
 		awful.key({ modkey, "Shift" }, "b", function() awful.spawn(scripts .. "/bmks gh-repos") end,
 			{ description = "Repos bookmarks", group = "5 - media/scripts" }),
 		awful.key({ modkey, "Shift" }, "s", function() awful.spawn(scripts .. "/rotate-screen") end,
