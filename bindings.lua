@@ -180,7 +180,13 @@ M.init = function()
 		awful.key({ modkey, "Shift" }, "t", function(c) c.ontop = not c.ontop end,
 			{ description = "Toggle keep on top", group = "3 - client" }),
 		awful.key({ modkey, }, "n", function(c) c.minimized = true end,
-			{ description = "Minimize client", group = "3 - client" })
+			{ description = "Minimize client", group = "3 - client" }),
+		awful.key({ modkey, "Shift" }, "m",
+			function(c)
+				c.maximized = not c.maximized
+				c:raise()
+			end,
+			{ description = "(un)maximize", group = "client" })
 	)
 
 	-- Bind 0-9 keys to tags.
