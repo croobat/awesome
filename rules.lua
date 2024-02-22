@@ -86,8 +86,9 @@ M.init = function()
 					"Tor Browser", -- Needs a fixed window size to avoid fingerprinting
 					"Wpa_gui", -- WPA supplicant graphical frontend
 					"veromix", -- Veromix
-					"xtightvncviewer" }, -- VNC client
-				"Gitk",   -- GTK git history viewer
+					"xtightvncviewer", -- VNC client
+					"Gitk", -- GTK git history viewer
+				},
 				name = {
 					"Event Tester", -- xev
 					"Emulator", -- android studio emulator
@@ -156,6 +157,9 @@ M.init = function()
 		},
 		{
 			rule_any = {
+				instance = {
+					"spotify",
+				},
 				name = {
 					"cmus",
 					"ncspot",
@@ -179,6 +183,7 @@ M.init = function()
 					"slack",
 					"google-chat-linux",
 					"whatsapp-nativefier-d40211",
+					"whatsapp-for-linux",
 				},
 			},
 			properties = { tag = "Chat" }

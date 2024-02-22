@@ -403,7 +403,7 @@ M.init = function()
 			{ description = "VLC", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "y", function() awful.spawn("alacritty --title ncspot -e ncspot") end,
 			{ description = "Spotify", group = "8 - apps" }),
-		awful.key({ modkey, altkey }, "z", function() awful.spawn("whatsapp-nativefier") end,
+		awful.key({ modkey, altkey }, "z", function() awful.spawn("whatsapp-for-linux") end,
 			{ description = "Whatsapp", group = "8 - apps" })
 	)
 

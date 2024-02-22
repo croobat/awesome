@@ -1,7 +1,6 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 
 local scratch = require("widgets.scratchpad")
 
@@ -46,7 +45,9 @@ local function minimize_terminal(c)
 				parent_client.child_resize = c
 				parent_client.minimized = true
 
-				c:connect_signal("unmanage", function() parent_client.minimized = false end)
+				if parent_client then
+					c:connect_signal("unmanage", function() parent_client.minimized = false end)
+				end
 
 				-- c.floating=true
 				copy_size(c, parent_client)
@@ -66,6 +67,8 @@ local function move_mouse_onto_focused_client()
 			autostart = true,
 			single_shot = true,
 			callback = function()
+				if not c.valid then return end
+
 				-- avoid if mouse is in top bar
 				if mouse.object_under_pointer() ~= c and mouse.coords().y > 20 then
 					local geometry = c:geometry()

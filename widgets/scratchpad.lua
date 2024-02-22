@@ -46,7 +46,7 @@ function scratch.raise(cmd, rule)
 	end
 
 	-- client not found, spawn it
-	util.spawn(cmd)
+	awful.spawn(cmd)
 end
 
 function scratch.toggle(cmd, rule, _)
