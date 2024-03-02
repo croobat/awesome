@@ -36,7 +36,7 @@ local function minimize_terminal(c)
 	awful.spawn.easy_async('bash ' .. awesome_config_folder .. 'utils/check_parent.sh gppid ' .. pid, function(gppid)
 		awful.spawn.easy_async('bash ' .. awesome_config_folder .. 'utils/check_parent.sh ppid ' .. pid, function(ppid)
 			if
-				parent_client
+				parent_client and parent_client.valid and parent_client.pid
 				and (
 					gppid:find('^' .. parent_client.pid) or ppid:find('^' .. parent_client.pid)
 					and is_terminal(parent_client) or parent_client.name == "lfrun"

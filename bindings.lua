@@ -328,6 +328,8 @@ M.init = function()
 			{ description = "Next", group = "5 - media/scripts" }),
 		awful.key({ modkey }, ",", function() awful.spawn("playerctl previous") end,
 			{ description = "Previous", group = "5 - media/scripts" }),
+		awful.key({ modkey }, "b", function() awful.spawn(scripts .. "/bmks") end,
+			{ description = "Repos bookmarks", group = "5 - media/scripts" }),
 		awful.key({ modkey, "Shift" }, "b", function() awful.spawn(scripts .. "/bmks gh-repos") end,
 			{ description = "Repos bookmarks", group = "5 - media/scripts" }),
 		awful.key({ modkey, "Shift" }, "s", function() awful.spawn(scripts .. "/rotate-screen") end,
@@ -379,9 +381,10 @@ M.init = function()
 			{ description = "Firefox", group = "8 - apps" }),
 		awful.key({ modkey, "Shift" }, "f", function() awful.spawn("firefox-developer-edition") end,
 			{ description = "Firefox developer edition", group = "8 - apps" }),
-		awful.key({ modkey }, "g", function() awful.spawn("google-chrome-stable") end,
+		awful.key({ modkey }, "g", function() awful.spawn("google-chrome-stable --no-default-browser-check") end,
 			{ description = "Google chrome", group = "8 - apps" }),
-		awful.key({ modkey, "Shift" }, "g", function() awful.spawn("google-chrome-unstable") end,
+		awful.key({ modkey, "Shift" }, "g",
+			function() awful.spawn("google-chrome-unstable --no-default-browser-check") end,
 			{ description = "Google chrome unstable", group = "8 - apps" }),
 		awful.key({ modkey }, "w", function() awful.spawn("qutebrowser") end,
 			{ description = "Qutebrowser", group = "8 - apps" }),
@@ -389,7 +392,7 @@ M.init = function()
 			{ description = "Cmus", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "d", function() awful.spawn("discord") end,
 			{ description = "Discord", group = "8 - apps" }),
-		awful.key({ modkey, altkey }, "e", function() awful.spawn("alacritty") end,
+		awful.key({ modkey, altkey }, "e", function() awful.spawn(terminal) end,
 			{ description = "Terminal", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "f", function() awful.spawn("freecad") end,
 			{ description = "Freecad", group = "8 - apps" }),
@@ -403,7 +406,11 @@ M.init = function()
 			{ description = "VLC", group = "8 - apps" }),
 		awful.key({ modkey, altkey }, "y", function() awful.spawn("alacritty --title ncspot -e ncspot") end,
 			{ description = "Spotify", group = "8 - apps" }),
-		awful.key({ modkey, altkey }, "z", function() awful.spawn("whatsapp-for-linux") end,
+		awful.key({ modkey, altkey }, "z",
+			function()
+				awful.spawn(
+					"/usr/bin/chromium --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm")
+			end,
 			{ description = "Whatsapp", group = "8 - apps" })
 	)
 

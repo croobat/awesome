@@ -96,7 +96,7 @@ M.init = function()
 				role = {
 					"AlarmWindow", -- Thunderbird's calendar
 					"ConfigManager", -- Thunderbird's about:config
-					"pop-up", -- e.g. Google Chrome's (detached) Developer Tools
+					-- "pop-up", -- e.g. Google Chrome's (detached) Developer Tools
 				}
 			},
 			properties = { floating = true }
@@ -182,8 +182,9 @@ M.init = function()
 				instance = {
 					"slack",
 					"google-chat-linux",
-					"whatsapp-nativefier-d40211",
-					"whatsapp-for-linux",
+				},
+				name = {
+					"WhatsApp Web",
 				},
 			},
 			properties = { tag = "Chat" }
