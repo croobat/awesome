@@ -86,6 +86,7 @@ M.init = function()
 	-- when a new client appears
 	client.connect_signal("manage", function(c)
 		local t = c.first_tag
+		local layout = awful.layout.get(c.screen)
 
 		-- set master factor to 0.55 (only if there are 2 clients)
 		if #c.screen.tiled_clients == 2 then
@@ -95,11 +96,18 @@ M.init = function()
 		-- set new windows as slave
 		if not awesome.startup then awful.client.setslave(c) end
 
-		-- if client is not floating, put it into tiled mode
-		if not awesome.startup and not c.floating and awful.client.idx(c) then
+		-- invert slaves shift order (if not startup, not floating, not first client and layout is tiled)
+		local is_layout_tiled = layout.name == " []= " or layout.name == " =[] "
+		if not awesome.startup and is_layout_tiled and not c.floating and awful.client.idx(c) then
 			local client_info = awful.client.idx(c)
 			if client_info.col > 0 and client_info.idx > 1 then
-				awful.client.swap.byidx(1 - client_info.idx, c)
+				local n = client_info.idx
+				awful.client.swap.byidx(1 - n, c)
+				while n > 2 do
+					local current_client = awful.client.next(client_info.idx - 1)
+					awful.client.swap.byidx(n - 2 * (n - 1), current_client)
+					n = n - 1
+				end
 			end
 		end
 
@@ -154,6 +162,7 @@ M.init = function()
 	end)
 
 	tag.connect_signal("property::selected", function()
+		-- hide all scratchpads
 		scratch.turn_off_all()
 	end)
 
