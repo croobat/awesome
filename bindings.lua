@@ -409,7 +409,7 @@ M.init = function()
 		awful.key({ modkey, altkey }, "z",
 			function()
 				awful.spawn(
-					"/usr/bin/chromium --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm")
+					"/opt/google/chrome-unstable/google-chrome-unstable '--profile-directory=Profile 1' --app-id=hnpfjngllnobngcgfapefoaidbinmjnm")
 			end,
 			{ description = "Whatsapp", group = "8 - apps" })
 	)

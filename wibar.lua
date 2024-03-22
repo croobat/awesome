@@ -41,6 +41,7 @@ M.init = function()
 	myVolume = wibox.container.margin(
 		volume_widget {
 			card = 0,
+			device = "pipewire",
 			widget_type = "icon_and_text",
 		},
 		0, 5, 0, 0)

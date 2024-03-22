@@ -5,7 +5,7 @@ local dpi                      = xresources.apply_dpi
 
 local theme                    = {}
 
-theme.font                     = "Recursive Mono Linear Static Medium 7"
+theme.font                     = "Recursive Mono Linear Static Medium 8"
 
 -- colors
 theme.col_black                = "#282a36"
@@ -66,7 +66,7 @@ theme.notification_fg          = theme.col_purple
 theme.notification_shape       = gears.shape.rounded_rect
 theme.notification_margin      = dpi(0)
 theme.notification_max_width   = dpi(300)
-theme.notification_max_height  = dpi(150)
+theme.notification_max_height  = dpi(200)
 theme.notification_icon_size   = dpi(80)
 
 -- wallpaper

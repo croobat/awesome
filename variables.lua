@@ -10,8 +10,8 @@ M.init = function()
 	naughty.config.defaults.timeout = 5
 	naughty.config.defaults.margin = 10
 
-	terminal = os.getenv("TERM") or "xterm"
-	editor = os.getenv("EDITOR") or "nano"
+	editor = "nvim"
+	terminal = "alacritty"
 	file_manager = "nemo"
 	browser = "firefox"
 	mail_client = "thunderbird"

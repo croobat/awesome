@@ -75,6 +75,7 @@ M.init = function()
 					"pavucontrol", -- Pulseaudio volume control
 					"gnome-system-monitor", -- System monitor
 					"simple-scan", -- Scanner
+					"qbittorrent", -- Torrent client
 				},
 				class = {
 					"Arandr", -- Screen layout editor
